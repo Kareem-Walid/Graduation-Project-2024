@@ -49,6 +49,15 @@ Bluetooth BT1 =
 		.GPIO_PIN_RX	= GPIO_Pin_10
 };
 
+Bluetooth BT2 =
+{
+		.USARTx			= USART3,
+		.GPIOX  		= GPIOB ,
+		.GPIO_PIN_TX	= GPIO_Pin_10,
+		.GPIO_PIN_RX	= GPIO_Pin_11
+};
+
+
 SPI_dev BlackPill =
 {
 		.SPIx = SPI2,
@@ -79,7 +88,7 @@ SPI_dev Raspberry =
 SPI_InitTypeDef SPI_InitStructure =
 {
 		.SPI_Direction = SPI_Direction_2Lines_FullDuplex,
-		 .SPI_Mode	   = SPI_Mode_Master,
+		.SPI_Mode	   = SPI_Mode_Master,
 		.SPI_DataSize  = SPI_DataSize_16b,
 		.SPI_CPOL      = SPI_CPOL_High,
 		.SPI_CPHA      = SPI_CPHA_2Edge,
@@ -136,6 +145,19 @@ void Bluetooth_Init(Bluetooth* BTx)
 	GPIO_UART_Struct.GPIO_Speed = GPIO_Speed_2MHz;
 	GPIO_Init(BTx -> GPIOX, &GPIO_UART_Struct);
 
+	if(BTx -> USARTx == USART3)
+	{
+
+		NVIC_InitTypeDef NVIC_InitStructure;
+
+		// USART_InitStruct.USART_WordLength = USART_WordLength_8b;
+		USART_ITConfig(BTx -> USARTx , USART_IT_RXNE , ENABLE);
+		NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;
+		NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+		NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
+		NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+		NVIC_Init(&NVIC_InitStructure);
+	}
 
 	USART_StructInit(&USART_InitStruct);
 	USART_Init(BTx->USARTx,&USART_InitStruct);
@@ -201,16 +223,23 @@ void Car_Init(void)
 
 	SERVO_Init(&SEV);
 
-	Bluetooth_Init(&BT1);
+//	Bluetooth_Init(&BT1);
+
+	Bluetooth_Init(&BT2);
 
 	SPIDev_Init(&BlackPill);
-	SPIDev_Init(&Raspberry);
+	// SPIDev_Init(&Raspberry);
 
 	// BS Buzzer
 	BUZZER_Init(GPIOB , GPIO_Pin_9);
 
+	BUZZER_Init(GPIOA , GPIO_Pin_9);
+	BUZZER_Init(GPIOA , GPIO_Pin_10);
+	BUZZER_Init(LK_SIGNAL_LED_PORT, LK_LED_GPIO_Pin);   // LK
 	// AEB LED
 	BUZZER_Init(AEB_LED_PORT , AEB_LED_GPIO_Pin);
+
+
 }
 
 

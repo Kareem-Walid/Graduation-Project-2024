@@ -123,46 +123,50 @@ static NBS_ReturnType_e NBS_ReturnType_e_CreateBlindSpotSemaphores()
 /******************************************************************************************************/
 /*******************************************freeRTOS Tasks*********************************************/
 
+
 void vRightAreaHandler(void* arg)
 {
-	uint16_t data = 0;
+
 	BaseType_t xSemaphoreTakeState = pdFAIL;
 	BaseType_t xQueueSendState = errQUEUE_FULL;
 	uint16_t warningMes = 'R';
 	UBaseType_t uxHighWaterMark;
 	uint8_t ID1 = 0;
+	uint16_t data1 = 0;
 
 	while(1)
 	{
 		xSemaphoreTakeState = xSemaphoreTake(binarySemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
 		if(xSemaphoreTakeState == pdPASS)
 		{
-			vReadDataFromM4(RIGHT_ULTRASONIC_ID, &data);
-			ID1 = ((data & 0xF000) >> 12);
+			vReadDataFromM4(RIGHT_ULTRASONIC_ID, &data1);
+			ID1 = ((data1 & 0xF000) >> 12);
 			while(ID1 != RIGHT_ULTRASONIC_ID)
 			{
-				vReadDataFromM4(RIGHT_ULTRASONIC_ID,&data);
-				ID1 = (data & 0xF000) >> 12;
+				vReadDataFromM4(RIGHT_ULTRASONIC_ID,&data1);
+				ID1 = (data1 & 0xF000) >> 12;
 			}
 			xSemaphoreGive(binarySemaphoreHandler);
 			xSemaphoreTakeState = xSemaphoreTake(RightDisSemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
 			if(xSemaphoreTakeState == pdPASS) /*Semaphore is taken.*/
 			{
-				RightDis = (data & 0x0FFF);
+				RightDis = (data1 & 0x0FFF);
 				if((RightDis <= MIN_DISTANCE) && (RightDis > 4))
 				{
-					xQueueSendState = xQueueSendToBack(LCDQueue, &warningMes, portMAX_DELAY); /*Send the message to the LCD Queue*/
-					if(xQueueSendState == pdPASS)
+			//		xQueueSendState = xQueueSendToBack(LCDQueue, &warningMes, portMAX_DELAY); /*Send the message to the LCD Queue*/
+					BUZZER_on(RIGHT_SIGNAL_LED_PORT, RIGHT_LED_GPIO_Pin);
+	/*				if(xQueueSendState == pdPASS)
 					{
 						printf("Message is sent to the Queue\n");
 					}
 					else
 					{
 						printf("Message is not sent to the Queue\n");
-					}
+					}*/
 				}
 				else
 				{
+					BUZZER_off(RIGHT_SIGNAL_LED_PORT, RIGHT_LED_GPIO_Pin);
 					printf("Right Distance is Safe\n");
 				}
 				xSemaphoreGive(RightDisSemaphoreHandler);
@@ -177,40 +181,45 @@ void vRightAreaHandler(void* arg)
 			printf("The Semaphore is not available\n");
 		}
 		uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
-		vTaskDelay(250);
+		vTaskDelay(100);
 	}
 }
 
 
+
+
 void vLeftAreaHandler(void* arg)
 {
+
 	BaseType_t xSemaphoreTakeState = pdFAIL;
 	BaseType_t xQueueSendState = errQUEUE_FULL;
 	uint16_t warningMes = 'L';
 	volatile UBaseType_t uxHighWaterMark;
-	uint16_t data = 0;
+	uint16_t data2 = 0;
 	uint8_t ID1 = 0;
 	while(1)
 	{
 		xSemaphoreTakeState = xSemaphoreTake(binarySemaphoreHandler, portMAX_DELAY);
 		if(xSemaphoreTakeState == pdPASS)
 		{
-			vReadDataFromM4(LEFT_ULTRASONIC_ID, &data);
-			ID1 = ((data & 0xF000) >> 12);
+			vReadDataFromM4(LEFT_ULTRASONIC_ID, &data2);
+			ID1 = ((data2 & 0xF000) >> 12);
 			while(ID1 != LEFT_ULTRASONIC_ID)
 			{
-				vReadDataFromM4(LEFT_ULTRASONIC_ID,&data);
-				ID1 = (data & 0xF000) >> 12;
+				vReadDataFromM4(LEFT_ULTRASONIC_ID,&data2);
+				ID1 = (data2 & 0xF000) >> 12;
 			}
 
 			xSemaphoreGive(binarySemaphoreHandler);
 			xSemaphoreTakeState = xSemaphoreTake(LeftDisSemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
 			if(xSemaphoreTakeState == pdPASS) /*Semaphore is taken.*/
 			{
-				LeftDis = (data & 0x0FFF);
+				LeftDis = (data2 & 0x0FFF);
 				if(LeftDis <= MIN_DISTANCE)
 				{
-					xQueueSendState = xQueueSendToBack(LCDQueue, &warningMes, portMAX_DELAY);
+					BUZZER_on(LEFT_SIGNAL_LED_PORT, LEFT_LED_GPIO_Pin);
+		/*			xQueueSendState = xQueueSendToBack(LCDQueue, &warningMes, portMAX_DELAY);
+
 					if(xQueueSendState == pdPASS)
 					{
 						printf("Message is sent to the Queue\n");
@@ -218,10 +227,11 @@ void vLeftAreaHandler(void* arg)
 					else
 					{
 						printf("Message is not sent to the Queue\n");
-					}
+					}*/
 				}
 				else
 				{
+					BUZZER_off(LEFT_SIGNAL_LED_PORT, LEFT_LED_GPIO_Pin);
 					printf("Left Distance is Safe\n");
 				}
 				xSemaphoreGive(LeftDisSemaphoreHandler);
@@ -232,7 +242,7 @@ void vLeftAreaHandler(void* arg)
 			printf("The Semaphore is not available\n");
 		}
 		uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
-		vTaskDelay(250);
+		vTaskDelay(100);
 	}
 }
 /*******************************************************************************************************/
@@ -294,7 +304,7 @@ void TurnSignalWarningTwo(void* arg)
 				printf("Left Turn signal semaphore can not be taken");
 			}
 		}
-		vTaskDelay(250);
+		vTaskDelay(100);
 	}
 }
 

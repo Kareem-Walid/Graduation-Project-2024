@@ -9,7 +9,7 @@ TaskHandle_t vAEB_Task_Handler;
 
 uint16_t gENCs_Speed;
 uint16_t gCar_Direction;
-uint16_t gCurrent_Speed;
+uint8_t gCurrent_Speed;
 
 uint16_t gFront_Distance;
 
@@ -49,7 +49,7 @@ void vAEB_Init(void)
 
 
 float K  = 0;
-uint16_t Max_Speed;
+
 uint16_t Loc_Object_Distance = 0;
 
 void vAEB_Task(void * pvParameter)
@@ -63,9 +63,9 @@ void vAEB_Task(void * pvParameter)
 		{
 			BUZZER_off(AEB_LED_PORT, AEB_LED_GPIO_Pin);
 
-			 Max_Speed = gCurrent_Speed ;
-			 K = ( (float)gCurrent_Speed / (gWarning_Distance - gBreaking_Distance));
-			 K = roundf( K * 100) / 100 ;
+			// Max_Speed = gCurrent_Speed ;
+			// K = ( (float)gCurrent_Speed / ( gWarning_Distance - gBreaking_Distance) );
+			//K = roundf( K * 100) / 100 ;
 
 		}else if(gFront_Distance <= gWarning_Distance && gFront_Distance > gBreaking_Distance)
 		{
@@ -74,7 +74,7 @@ void vAEB_Task(void * pvParameter)
 			BUZZER_on(AEB_LED_PORT, AEB_LED_GPIO_Pin);
 
 			/* ---------- slow down mechanism ------- */
-			 gCurrent_Speed = K * (gFront_Distance - gBreaking_Distance);
+			// gCurrent_Speed = K * (gFront_Distance - gBreaking_Distance);
 			/* -------------------------------------------- */
 
 		}else if(gFront_Distance < gBreaking_Distance )
@@ -86,7 +86,7 @@ void vAEB_Task(void * pvParameter)
 			gCurrent_Speed = 0;
 			xSemaphoreGive(Motors_Semaphore_Handler);
 
-		}else if(gFront_Distance > Loc_Object_Distance && gCurrent_Speed ==0 ){
+		}else if(gFront_Distance > Loc_Object_Distance && gCurrent_Speed == 0){
 
 			BUZZER_off(AEB_LED_PORT, AEB_LED_GPIO_Pin);
 
@@ -129,7 +129,6 @@ void vCar_Task(void * pvParameter)
 		xSemaphoreGive(Motors_Semaphore_Handler);
 
 		/* --------- Speed of the motors --------*/
-
 
 		xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
 		Motor_SetSpeed(&Rmotor,gCurrent_Speed);
