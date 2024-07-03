@@ -14,7 +14,7 @@ extern uint16_t gCar_Direction;
 
 extern uint16_t gFront_Distance;
 
-
+extern uint16_t gCurrent_Speed;
 extern uint8_t gReceived_Sign;
 
 

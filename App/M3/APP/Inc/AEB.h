@@ -16,8 +16,8 @@
 
 
 /*----------------------- MACROS -----------------------*/
-#define BREAKING_DISTANCE_CONST       0.25
-#define WARNING_DISTANCE_CONST        0.45
+#define BREAKING_DISTANCE_CONST       0.3
+#define WARNING_DISTANCE_CONST        0.5
 
 
 

@@ -223,12 +223,9 @@ void Car_Init(void)
 
 	SERVO_Init(&SEV);
 
-//	Bluetooth_Init(&BT1);
-
 	Bluetooth_Init(&BT2);
 
 	SPIDev_Init(&BlackPill);
-	// SPIDev_Init(&Raspberry);
 
 	// BS Buzzer
 	BUZZER_Init(GPIOB , GPIO_Pin_9);

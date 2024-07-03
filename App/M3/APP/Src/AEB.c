@@ -8,8 +8,7 @@ TaskHandle_t vAEB_Task_Handler;
 
 
 uint16_t gENCs_Speed;
-uint16_t gCar_Direction;
-uint8_t gCurrent_Speed;
+uint16_t gCar_Direction;uint8_t gCurrent_Speed ;
 
 uint16_t gFront_Distance;
 
@@ -29,7 +28,7 @@ void vCalculations_Task(void * pvParameter);
 void vAEB_Init(void)
 {
 
-	xTaskCreate(vAEB_Task, "AEB", 128,( void * )NULL, 3,&vAEB_Task_Handler);
+    xTaskCreate(vAEB_Task, "AEB", 128,( void * )NULL, 3,&vAEB_Task_Handler);
 	xTaskCreate(vCar_Task, "AEB", 128,( void * )NULL, 1, NULL);
 	xTaskCreate(vCalculations_Task, "AEB", 128,( void * )NULL, 1, NULL);
 

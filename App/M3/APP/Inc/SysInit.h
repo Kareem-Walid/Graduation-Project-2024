@@ -37,17 +37,17 @@
 
 /* ----------------- APP MACROS ------------------- */
 
-#define CAR_FORWARD           1
+#define CAR_FORWARD           3
 #define CAR_RIGHT             2
-#define CAR_BACKWORD          3
-#define CAR_LEFT              4
+#define CAR_BACKWORD          4
+#define CAR_LEFT              1
 #define SPEED_INC             5
 #define SPEED_DEC             6
-#define CAR_STOP              7
-#define ACC_ON_OFF            8
-#define LK_ON_OFF             9
-#define RIGHT_TURN_SIGNAL     'A'
-#define LEFT_TURN_SIGNAL      'B'
+#define CAR_STOP              11
+#define ACC_ON_OFF            7
+#define LK_ON_OFF             8
+#define RIGHT_TURN_SIGNAL     10
+#define LEFT_TURN_SIGNAL      9
 
 
 
@@ -66,7 +66,7 @@
 #define MAX_SPEED_       55
 #define MIN_SPEED        15
 
-#define MAX_ANGLE       100
+#define MAX_ANGLE       125
 #define MIN_ANGLE       0
 
 

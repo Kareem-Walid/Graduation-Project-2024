@@ -45,8 +45,8 @@ uint16_t gSpeed_Up;
 
 /* ------------------------------------ */
 
-uint16_t gCurrent_Angle;
-// #define CENTER_ANGLE   88
+uint16_t gCurrent_Angle =0;
+
 /*****************************************************************************************************/
 /*****************************************MACROs Section**********************************************/
 #define TSR_ID 		1
@@ -68,7 +68,7 @@ QueueHandle_t     LCDQueue;
 /* Declare a variable to hold the created event group. */
 EventGroupHandle_t xCreatedEventGroup;
 
-volatile int16_t CenterOffset = 0;
+volatile int8_t UARTCenterOffset = 0;
 
 /*****************************************************************************************************/
 /***************************************Extern Global variables Section********************************/
@@ -96,10 +96,12 @@ void vReadDataFromUART(void* arg);
 NSysInit_e SysInit(void)
 {
 	NSysInit_e rt = SysInit_NO_ERROR;
-
+	gCar_Direction = STOP;
+	gCurrent_Speed = 0;
 	Car_Init();
-	gCurrent_Angle = 50;
+	gCurrent_Angle = 60;
 	SERVO_MoveTo(&SEV,gCurrent_Angle);
+
 
 	BUZZER_off(AEB_LED_PORT, AEB_LED_GPIO_Pin);
 	BUZZER_off(RIGHT_SIGNAL_LED_PORT, LEFT_LED_GPIO_Pin);
@@ -445,7 +447,7 @@ void vReadDataFromM4(uint16_t ID, uint16_t* data)
 //		xSemaphoreTakeState = xSemaphoreTake(Offset_binarySemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
 //		if(xSemaphoreTakeState == pdPASS)
 //		{
-//			CenterOffset = (int8_t)RasPI_ReceivedData;
+//			UARTCenterOffset = (int8_t)RasPI_ReceivedData;
 //		}
 //		else{}
 //		xSemaphoreGive(Offset_binarySemaphoreHandler);
@@ -472,14 +474,12 @@ uint16_t RasPI_ReceivedData = 0;
 
 void USART3_IRQHandler(void)
 {
-	uint8_t ID = 0;
+	// uint8_t ID = 0;
 	EventBits_t uxBits;
 	static uint8_t ACC_State = OFF;
 	static uint8_t RightSignalFlag = 0;
 	static uint8_t LeftSignalFlag = 0;
 	static uint8_t LKSignalFlag = 0;
-
-
 
 	BaseType_t xSemaphoreTakeState = pdFAIL;
 
@@ -499,9 +499,9 @@ void USART3_IRQHandler(void)
 		case CAR_RIGHT:   //2
 			if(gCurrent_Angle < MAX_ANGLE)
 			{
-				xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Angle += 10;
-				xSemaphoreGive(Current_Angle_Semaphore_Handler);
+				// xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
+				gCurrent_Angle += 20;
+				//xSemaphoreGive(Current_Angle_Semaphore_Handler);
 				SERVO_MoveTo(&SEV, gCurrent_Angle);
 			}
 			break;
@@ -516,9 +516,9 @@ void USART3_IRQHandler(void)
 		case CAR_LEFT:  //4
 			if(gCurrent_Angle > MIN_ANGLE)
 			{
-				xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Angle -= 10;
-				xSemaphoreGive(Current_Angle_Semaphore_Handler);
+				//xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
+				gCurrent_Angle -= 20;
+				//xSemaphoreGive(Current_Angle_Semaphore_Handler);
 				SERVO_MoveTo(&SEV, gCurrent_Angle);
 			}
 			break;
@@ -528,7 +528,7 @@ void USART3_IRQHandler(void)
 			if (gCurrent_Speed < MAX_SPEED_ && gCar_Direction != STOP)
 			{
 				xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Speed += ( gCurrent_Speed == 0 )? 15 : 5;
+				gCurrent_Speed += ( gCurrent_Speed == 0 )? 20 : 10;
 				gSpeed_Up = gCurrent_Speed;
 				xSemaphoreGive(Current_Speed_Semaphore_Handler);
 			}
@@ -538,7 +538,7 @@ void USART3_IRQHandler(void)
 			if (gCurrent_Speed >= MIN_SPEED && gCar_Direction != STOP)
 			{
 				xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Speed -= ( gCurrent_Speed == 15 )? 15 : 5;
+				gCurrent_Speed -= ( gCurrent_Speed == 15 )? 20 : 10;
 				// gSpeed_Up = gCurrent_Speed;
 				xSemaphoreGive(Current_Speed_Semaphore_Handler);
 			}
@@ -632,9 +632,16 @@ void USART3_IRQHandler(void)
 	{
 		vTaskResume(vSign_Task_Handler);
 		gReceived_Sign = (int8_t)RasPI_ReceivedData;
-	}else if (asPI_ReceivedData >=16 && RasPI_ReceivedData <= 255)
-	{
 
+	}else if (RasPI_ReceivedData >=16 && RasPI_ReceivedData < 255)
+	{
+		xSemaphoreTakeState = xSemaphoreTake(Offset_binarySemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
+		if(xSemaphoreTakeState == pdPASS)
+		{
+			UARTCenterOffset = (int8_t)RasPI_ReceivedData - 119;
+		}
+		else{}
+		xSemaphoreGive(Offset_binarySemaphoreHandler);
 	}else{
 
 	}

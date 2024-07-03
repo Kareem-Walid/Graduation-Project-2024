@@ -11,17 +11,18 @@
 #include "stm32f10x.h"
 #include "Motor.h"
 #include "SERVO.h"
+#include "BUZZER.h"
 
 /* ----------------- MACROS ----------------- */
 #define  AEB_LED_PORT       	GPIOA
 #define  LEFT_SIGNAL_LED_PORT  	GPIOA
 #define  RIGHT_SIGNAL_LED_PORT  GPIOA
-#define  LK_SIGNAL_LED_PORT  GPIOA
+#define  LK_SIGNAL_LED_PORT     GPIOA
 
 #define  AEB_LED_GPIO_Pin  		GPIO_Pin_8
 #define  LEFT_LED_GPIO_Pin  	GPIO_Pin_10
 #define  RIGHT_LED_GPIO_Pin  	GPIO_Pin_9
-#define  LK_LED_GPIO_Pin  	GPIO_Pin_12
+#define  LK_LED_GPIO_Pin     	GPIO_Pin_12
 
 
 typedef struct

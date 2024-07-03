@@ -26,27 +26,31 @@
 
 /********************************************************************************************************************/
 /********************************************************MACROs Section**********************************************/
-
+#define CENTER_ANGLE   60
 /********************************************************************************************************************/
 /*******************************************************Global Variables Section*************************************/
 TaskHandle_t pxLKASCreated;
 
-//uint16_t gCurrent_Angle;
+extern uint16_t gCurrent_Angle;
+
+
+signed char value = 0 ,value_old ,error = 0, delta_angle = 0;
 
 /********************************************************************************************************************/
 /***************************************Extern Global variables Section**********************************************/
 extern SemaphoreHandle_t 	Offset_binarySemaphoreHandler;
-extern int16_t	 			CenterOffset;
+extern int8_t	 			UARTCenterOffset;
 extern QueueHandle_t     	LCDQueue;
 extern EventGroupHandle_t xCreatedEventGroup;
 
 /********************************************************************************************************************/
 /**************************************Static Functions declaration**************************************************/
-static void vEXTI_Init(void);
 static NError_type_e NError_type_e_LKAS_CreateTasks(void);
 /**************************************Scheduling Tasks Declaration**************************************************/
 void vTaskLDW				(void*arg);
 void vTaskLKAS				(void*arg);
+void vServoError			(void* arg);
+
 /********************************************************************************************************************/
 /****************************************Atomic Functions'DEF Section************************************************/
 NError_type_e Error_type_t_LKASInit(void)
@@ -68,23 +72,30 @@ static NError_type_e NError_type_e_LKAS_CreateTasks(void)
 
 	BaseType_t xTaskCreate_vTaskLKAS;
 	BaseType_t xTaskCreate_vTaskLDW;
-
+	BaseType_t xTaskCreate_vServoError;
 
 	/*Create the tasks then check if it is actually created or not.*/
+
 	xTaskCreate_vTaskLKAS =  xTaskCreate(vTaskLKAS,"vTaskLKAS", 100, NULL, vTaskLKAS_PRIORITY,&pxLKASCreated);
 	if(xTaskCreate_vTaskLKAS != pdPASS)
 	{
 		rt_type = TASK_CREATION_ERROR;
 	}
 
-	xTaskCreate_vTaskLDW = xTaskCreate(vTaskLDW,"vTaskLDW", 100, NULL, vTaskLDW_PRIORITY, NULL);
-	if(xTaskCreate_vTaskLDW != pdPASS)
-	{
-		rt_type = TASK_CREATION_ERROR;
-	}
+	//	xTaskCreate_vTaskLDW = xTaskCreate(vTaskLDW,"vTaskLDW", 100, NULL, vTaskLDW_PRIORITY, NULL);
+	//	if(xTaskCreate_vTaskLDW != pdPASS)
+	//	{
+	//		rt_type = TASK_CREATION_ERROR;
+	//	}
 
 	/*LKAS Task is initially Suspended.*/
-	vTaskSuspend(pxLKASCreated);
+	//vTaskSuspend(pxLKASCreated);
+
+	//	xTaskCreate_vServoError = xTaskCreate(vServoError,"vServoError", 100, NULL, 4, NULL);
+	//	if(xTaskCreate_vServoError != pdPASS)
+	//	{
+	//		rt_type = TASK_CREATION_ERROR;
+	//	}
 
 	return rt_type;
 }
@@ -104,31 +115,31 @@ void vTaskLDW(void* arg)
 		xSemaphoreTakeState = xSemaphoreTake(Offset_binarySemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
 		if(xSemaphoreTakeState == pdPASS)
 		{
-			if((CenterOffset > 0) && ((uxBits & BIT_0) == 0)) /*The Car drifts to right while right turn signal is OFF.*/
+			if((UARTCenterOffset > 0) && ((uxBits & BIT_0) == 0)) /*The Car drifts to right while right turn signal is OFF.*/
 			{
 				BUZZER_on(LK_SIGNAL_LED_PORT, LK_LED_GPIO_Pin);
-//				xQueueSendState = xQueueSendToBack(LCDQueue, &WarningMes, portMAX_DELAY); /*Send the message to the LCD Queue*/
-//				if(xQueueSendState == pdPASS)
-//				{
-//					printf("Message is sent to the LCD Queue\n");
-//				}
-//				else
-//				{
-//					printf("Message is not sent to the LCD Queue\n");
-//				}
+				//				xQueueSendState = xQueueSendToBack(LCDQueue, &WarningMes, portMAX_DELAY); /*Send the message to the LCD Queue*/
+				//				if(xQueueSendState == pdPASS)
+				//				{
+				//					printf("Message is sent to the LCD Queue\n");
+				//				}
+				//				else
+				//				{
+				//					printf("Message is not sent to the LCD Queue\n");
+				//				}
 			}
-			else if((CenterOffset < 0) && ((uxBits & BIT_2) == 0)) /*The Car drifts to left while left turn signal is OFF.*/
+			else if((UARTCenterOffset < 0) && ((uxBits & BIT_2) == 0)) /*The Car drifts to left while left turn signal is OFF.*/
 			{
 				BUZZER_on(LK_SIGNAL_LED_PORT, LK_LED_GPIO_Pin);
-//				xQueueSendState = xQueueSendToBack(LCDQueue, &WarningMes, portMAX_DELAY); /*Send the message to the LCD Queue*/
-//				if(xQueueSendState == pdPASS)
-//				{
-//					printf("Message is sent to the LCD Queue\n");
-//				}
-//				else
-//				{
-//					printf("Message is not sent to the LCD Queue\n");
-//				}
+				//				xQueueSendState = xQueueSendToBack(LCDQueue, &WarningMes, portMAX_DELAY); /*Send the message to the LCD Queue*/
+				//				if(xQueueSendState == pdPASS)
+				//				{
+				//					printf("Message is sent to the LCD Queue\n");
+				//				}
+				//				else
+				//				{
+				//					printf("Message is not sent to the LCD Queue\n");
+				//				}
 			}
 			else
 			{
@@ -155,23 +166,93 @@ void vTaskLKAS(void*arg)
 		xSemaphoreTakeState = xSemaphoreTake(Offset_binarySemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
 		if(xSemaphoreTakeState == pdPASS)
 		{
-			if((CenterOffset > 0) && ((uxBits & BIT_0) == 0)) /*The Car drifts to right while right turn signal is OFF.*/
+			if(UARTCenterOffset > 0)
 			{
+				gCurrent_Angle = CENTER_ANGLE - 6 * (UARTCenterOffset) ;
+				if((gCurrent_Angle > 0) && (gCurrent_Angle < 180))
+				{
+					SERVO_MoveTo(&SEV ,gCurrent_Angle);
+				}
 
-			}
-			else if((CenterOffset < 0) && ((uxBits & BIT_2) == 0)) /*The Car drifts to left while left turn signal is OFF.*/
+			}else if(UARTCenterOffset < 0)
 			{
-
+				gCurrent_Angle = CENTER_ANGLE - 6 * (UARTCenterOffset) ;
+				if((gCurrent_Angle > 0) && (gCurrent_Angle < 180))
+				{
+					SERVO_MoveTo(&SEV ,gCurrent_Angle);
+				}
 			}
 			else
 			{
-				/*Move forward.*/
-				printf("Move Forward");
-//				SERVO_MoveTo(&SEV ,(float)af_Angle);
+				SERVO_MoveTo(&SEV ,CENTER_ANGLE);
 			}
 		}
 		else{}
 		xSemaphoreGive(Offset_binarySemaphoreHandler);
 		vTaskDelay(100);
+	}
+}
+
+
+
+
+
+
+void vServoError(void* arg)
+{
+
+	while(1)
+	{
+		error = UARTCenterOffset - value_old;
+		if((error > -5) && (error  < 5))
+		{
+			delta_angle = 50 - 6 * (UARTCenterOffset);
+			if((delta_angle > 0) && (delta_angle < 180))
+			{
+				SERVO_MoveTo(&SEV ,delta_angle);
+			}
+			value_old = UARTCenterOffset;
+
+		}
+		else if((error < -5))
+		{
+			if(UARTCenterOffset  < -13)
+			{
+				delta_angle += 10;
+				if((delta_angle > 0) && (delta_angle < 180))
+				{
+					SERVO_MoveTo(&SEV ,delta_angle);
+				}
+			}
+			else
+			{
+				delta_angle -= 10;
+				if((delta_angle > 0) && (delta_angle < 180))
+				{
+					SERVO_MoveTo(&SEV ,delta_angle);
+				}
+			}
+
+		}
+		else if((error  > 5))
+		{
+			if(UARTCenterOffset  < -13)
+			{
+				delta_angle -= 10;
+				if((delta_angle > 0) && (delta_angle < 180))
+				{
+					SERVO_MoveTo(&SEV ,delta_angle);
+				}
+			}
+			else
+			{
+				delta_angle += 10;
+				if((delta_angle > 0) && (delta_angle < 180))
+				{
+					SERVO_MoveTo(&SEV ,delta_angle);
+				}
+			}
+			vTaskDelay(50);
+		}
 	}
 }

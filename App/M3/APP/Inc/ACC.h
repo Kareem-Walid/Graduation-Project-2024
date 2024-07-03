@@ -13,20 +13,19 @@
 #include "AEB.h"
 
 
-#define SPEED_30   1
-#define SPEED_60   2
-#define SPEED_90   3
-#define STOP_SIGN  4
+#define SPEED_30   12
+#define SPEED_60   13
+#define SPEED_90   14
+#define STOP_SIGN  15
 
 
 
-#define SPEED_MAPPED_TO_30      15
-#define SPEED_MAPPED_TO_60      25
-#define SPEED_MAPPED_TO_90      35
+#define SPEED_MAPPED_TO_30      20
+#define SPEED_MAPPED_TO_60      30
+#define SPEED_MAPPED_TO_90      40
 
 void vACC_Init(void);
-// void vCruise_Task(void * pvParameter);
-// void vFollow_Task(void * pvParameter);
+
 
 void vACC_Task(void * pvParameter);
 void vACC_Sign(void * pvParameter);
