@@ -9,12 +9,11 @@ TaskHandle_t vSign_Task_Handler;
 extern SemaphoreHandle_t Motors_Semaphore_Handler;
 
 extern uint16_t gDesired_Speed;
-extern uint16_t gCurrent_Speed;
-extern uint16_t gCar_Direction;
+extern uint8_t gCar_Direction;
 
 extern uint16_t gFront_Distance;
 
-extern uint16_t gCurrent_Speed;
+extern uint8_t gCurrent_Speed;
 extern uint8_t gReceived_Sign;
 
 
@@ -46,6 +45,7 @@ uint16_t Loc_Front_Car_Distance = 0;
 void vACC_Task(void * pvParameter)
 {
 
+	float K;
 	while(1)
 	{
 
@@ -55,13 +55,20 @@ void vACC_Task(void * pvParameter)
 			gCar_Direction = FORWARD;
 			gCurrent_Speed = gDesired_Speed;
 			xSemaphoreGive(Motors_Semaphore_Handler);
+			K = ( (float)gCurrent_Speed / ( gWarning_Distance - gBreaking_Distance) );
+			K = roundf( K * 100) / 100 ;
 
 		}else if(gFront_Distance < gWarning_Distance && gFront_Distance > gBreaking_Distance)
 		{
 			Loc_Front_Car_Distance = gFront_Distance;
 
 			/* ---------- TODO: slow down mechanism ------- */
-
+			gCurrent_Speed = K * (gFront_Distance - gBreaking_Distance);
+			if(gCurrent_Speed < 10)
+			{
+				gCurrent_Speed = 0;
+				gCar_Direction = STOP;
+			}
 			/*---------------------------------------------*/
 
 		}else if(gFront_Distance <= gBreaking_Distance)

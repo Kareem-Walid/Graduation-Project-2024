@@ -181,7 +181,7 @@ void vRightAreaHandler(void* arg)
 			printf("The Semaphore is not available\n");
 		}
 		uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
-		vTaskDelay(100);
+		vTaskDelay(250);
 	}
 }
 
@@ -215,7 +215,7 @@ void vLeftAreaHandler(void* arg)
 			if(xSemaphoreTakeState == pdPASS) /*Semaphore is taken.*/
 			{
 				LeftDis = (data2 & 0x0FFF);
-				if(LeftDis <= MIN_DISTANCE)
+				if(LeftDis <= MIN_DISTANCE && (LeftDis > 4))
 				{
 					BUZZER_on(LEFT_SIGNAL_LED_PORT, LEFT_LED_GPIO_Pin);
 		/*			xQueueSendState = xQueueSendToBack(LCDQueue, &warningMes, portMAX_DELAY);
@@ -242,9 +242,11 @@ void vLeftAreaHandler(void* arg)
 			printf("The Semaphore is not available\n");
 		}
 		uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
-		vTaskDelay(100);
+		vTaskDelay(250);
 	}
 }
+
+
 /*******************************************************************************************************/
 
 void TurnSignalWarningTwo(void* arg)

@@ -31,21 +31,23 @@ extern TaskHandle_t vSign_Task_Handler;
 extern TaskHandle_t vAEB_Task_Handler;
 
 
-extern uint16_t gCurrent_Speed;
+uint8_t gCurrent_Speed;
+uint8_t gCar_Direction;
+
 extern uint16_t gFront_Distance;
-extern uint16_t gCar_Direction;
+
+
+
 
 uint16_t gDesired_Speed;
-
 uint8_t gReceived_Sign;
-
 uint16_t gSpeed_Up;
 
 
 
 /* ------------------------------------ */
 
-uint16_t gCurrent_Angle =0;
+uint16_t gCurrent_Angle = 0;
 
 /*****************************************************************************************************/
 /*****************************************MACROs Section**********************************************/
@@ -93,15 +95,16 @@ void vReadDataFromUART(void* arg);
  * All ECUAL Initialization functions of this project must be called within this function.
  * It must be called before any initialize function of this project & before the starting of the scheduler
  */
+int i;
+
 NSysInit_e SysInit(void)
 {
 	NSysInit_e rt = SysInit_NO_ERROR;
-	gCar_Direction = STOP;
-	gCurrent_Speed = 0;
-	Car_Init();
-	gCurrent_Angle = 60;
-	SERVO_MoveTo(&SEV,gCurrent_Angle);
 
+	Car_Init();
+	gCurrent_Speed = 0;
+	gCar_Direction = FORWARD;
+	SERVO_MoveTo(&SEV,CENTER_ANGLE);
 
 	BUZZER_off(AEB_LED_PORT, AEB_LED_GPIO_Pin);
 	BUZZER_off(RIGHT_SIGNAL_LED_PORT, LEFT_LED_GPIO_Pin);
@@ -234,177 +237,6 @@ void vReadDataFromM4(uint16_t ID, uint16_t* data)
 /*************************************************************************************************/
 /**************************************** Scheduling Tasks*****************************************/
 
-
-
-
-
-
-
-//void vReadDataFromUART(void* arg)
-//{
-//
-//	uint8_t SignalState = 0;
-//	uint8_t ACC_State = OFF;
-//	EventBits_t uxBits;
-//	uint8_t RightSignalFlag = 0;
-//	uint8_t LeftSignalFlag = 0;
-//	uint8_t LKSignalFlag = 0;
-//
-//	while(1)
-//	{
-//		SignalState = USART_ReceiveData(USART1);
-//		switch (SignalState)
-//		{
-//
-//		/* --------- Control Directions ------*/
-//		case CAR_FORWARD:  //1
-//			gCar_Direction = FORWARD;
-//			break;
-//
-//		case CAR_RIGHT:   //2
-//			if(gCurrent_Angle < MAX_ANGLE)
-//			{
-//				xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
-//				gCurrent_Angle += 10;
-//				xSemaphoreGive(Current_Angle_Semaphore_Handler);
-//				SERVO_MoveTo(&SEV, gCurrent_Angle);
-//			}
-//			break;
-//
-//		case CAR_BACKWORD:  //3
-//			gCar_Direction = REVERSE;
-//			vTaskResume(vAEB_Task_Handler);
-//			vTaskSuspend(vACC_Task_Handler);
-//			vTaskSuspend(vSign_Task_Handler);
-//			break;
-//
-//		case CAR_LEFT:  //4
-//			if(gCurrent_Angle > MIN_ANGLE)
-//			{
-//				xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
-//				gCurrent_Angle -= 10;
-//				xSemaphoreGive(Current_Angle_Semaphore_Handler);
-//				SERVO_MoveTo(&SEV, gCurrent_Angle);
-//			}
-//			break;
-//
-//			/*---------- Control Speed ----------*/
-//		case SPEED_INC:  //5
-//			if (gCurrent_Speed < MAX_SPEED && gCar_Direction != STOP)
-//			{
-//				xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
-//				gCurrent_Speed += ( gCurrent_Speed == 0 )? 15 : 5;
-//				gSpeed_Up = gCurrent_Speed;
-//				xSemaphoreGive(Current_Speed_Semaphore_Handler);
-//			}
-//			break;
-//
-//		case SPEED_DEC: //6
-//			if (gCurrent_Speed > MIN_SPEED && gCar_Direction != STOP)
-//			{
-//				xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
-//				gCurrent_Speed -= ( gCurrent_Speed == 10 )? 15 : 5;
-//				gSpeed_Up = gCurrent_Speed;
-//				xSemaphoreGive(Current_Speed_Semaphore_Handler);
-//			}
-//			break;
-//
-//		case CAR_STOP:  //7
-//			gCar_Direction = STOP;
-//			gCurrent_Speed = 0;
-//			vTaskResume(vAEB_Task_Handler);
-//			vTaskSuspend(vACC_Task_Handler);
-//			vTaskSuspend(vSign_Task_Handler);
-//			break;
-//
-//			/*------------- ACC ---------------*/
-//
-//		case ACC_ON_OFF : //8
-//			ACC_State = !ACC_State;
-//			if(ACC_State == ON)
-//			{
-//				gDesired_Speed = gCurrent_Speed;
-//				vTaskSuspend(vAEB_Task_Handler);
-//				vTaskResume(vACC_Task_Handler);
-//
-//
-//			}else if (ACC_State == OFF)
-//			{
-//				// gDesired_Speed = 0;
-//				gCurrent_Speed = 0;
-//				vTaskResume(vAEB_Task_Handler);
-//				vTaskSuspend(vACC_Task_Handler);
-//				vTaskSuspend(vSign_Task_Handler);
-//			}
-//			break;
-//
-//			/* ---------------- LK --------------------*/
-//
-//		case LK_ON_OFF: //9
-//			if(LKSignalFlag == 0) /*LK is ON.*/
-//			{
-//				xTaskResumeFromISR(pxLKASCreated);
-//				LKSignalFlag = 1;
-//			}
-//			else if(LKSignalFlag == 1)  /*LK is OFF.*/
-//			{
-//				vTaskSuspend(pxLKASCreated);
-//				LKSignalFlag = 0;
-//			}
-//			break;
-//			break;
-//
-//
-//		case RIGHT_TURN_SIGNAL:   // A
-//			if(RightSignalFlag == 0)
-//			{
-//				RightSignalFlag = 1;
-//				uxBits = xEventGroupSetBits(xCreatedEventGroup, BIT_0);/* The bit being set. */
-//				if((uxBits & BIT_0) == 0)
-//				{
-//					printf("BIT 0 IS NOT SET");
-//				}
-//				else
-//				{}
-//			}
-//			else if(RightSignalFlag == 1) /*Right Turn Signal OFF*/
-//			{
-//				uxBits = xEventGroupClearBits(xCreatedEventGroup, BIT_0 );/* The bits being cleared. */
-//				RightSignalFlag = 0;
-//			}
-//			break;
-//
-//
-//		case LEFT_TURN_SIGNAL:   // B
-//			if((LeftSignalFlag == 0))
-//			{
-//				LeftSignalFlag = 1;
-//				uxBits = xEventGroupSetBits(xCreatedEventGroup, BIT_2);/* The bit being set. */
-//				if((uxBits & BIT_2) == 0)
-//				{
-//					printf("BIT 2 IS NOT SET");
-//				}
-//				else
-//				{}
-//			}
-//			else if(LeftSignalFlag == 1)  /*Left Turn Signal OFF.*/
-//			{
-//				uxBits = xEventGroupClearBits(xCreatedEventGroup, BIT_2);/* The bits being cleared. */
-//				LeftSignalFlag = 0;
-//			}
-//			break;
-//
-//		}
-//
-//
-//		vTaskDelay(100);
-//	}
-//}
-//
-
-
-
-
 //void vSendMessageViaUSART(void* arg)
 //{
 //	BaseType_t xQueueReceiveState; /*LCD Queue receiving state */
@@ -433,55 +265,26 @@ void vReadDataFromM4(uint16_t ID, uint16_t* data)
 /*************************************************************************************************/
 
 
-//void SPI1_IRQHandler(void)
-//{
-//	uint16_t RasPI_ReceivedData = 0;
-//	uint8_t ID = 0;
-//	uint16_t RasPI_ReceivedData = 0;
-//	BaseType_t xSemaphoreTakeState = pdFAIL;
-//
-//	RasPI_ReceivedData = SPI_I2S_ReceiveData(SPI1);
-//
-//	if(ID == LKAS_ID)
-//	{
-//		xSemaphoreTakeState = xSemaphoreTake(Offset_binarySemaphoreHandler, portMAX_DELAY); /*Take The Semaphore.*/
-//		if(xSemaphoreTakeState == pdPASS)
-//		{
-//			UARTCenterOffset = (int8_t)RasPI_ReceivedData;
-//		}
-//		else{}
-//		xSemaphoreGive(Offset_binarySemaphoreHandler);
-//	}
-//	else if(ID == TSR_ID)
-//	{
-//
-//		if((int8_t)RasPI_ReceivedData >=1 && (int8_t)RasPI_ReceivedData <= 4)
-//		{
-//			vTaskResume(vSign_Task_Handler);
-//			gReceived_Sign = (int8_t)RasPI_ReceivedData;
-//		}
-//
-//	}else{}
-//
-//}
 
 
 
 
 uint16_t RasPI_ReceivedData = 0;
-
+uint8_t ACC_State = OFF;
+uint8_t RightSignalFlag = 0;
+uint8_t LeftSignalFlag = 0;
 
 
 void USART3_IRQHandler(void)
 {
 	// uint8_t ID = 0;
 	EventBits_t uxBits;
-	static uint8_t ACC_State = OFF;
-	static uint8_t RightSignalFlag = 0;
-	static uint8_t LeftSignalFlag = 0;
+	// static uint8_t ACC_State = OFF;
+	// static uint8_t RightSignalFlag = 0;
+	// static uint8_t LeftSignalFlag = 0;
 	static uint8_t LKSignalFlag = 0;
-
 	BaseType_t xSemaphoreTakeState = pdFAIL;
+
 
 	RasPI_ReceivedData = USART_ReceiveData(USART3);
 
@@ -500,7 +303,7 @@ void USART3_IRQHandler(void)
 			if(gCurrent_Angle < MAX_ANGLE)
 			{
 				// xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Angle += 20;
+				gCurrent_Angle += 15;
 				//xSemaphoreGive(Current_Angle_Semaphore_Handler);
 				SERVO_MoveTo(&SEV, gCurrent_Angle);
 			}
@@ -517,7 +320,7 @@ void USART3_IRQHandler(void)
 			if(gCurrent_Angle > MIN_ANGLE)
 			{
 				//xSemaphoreTake(Current_Angle_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Angle -= 20;
+				gCurrent_Angle -= 15;
 				//xSemaphoreGive(Current_Angle_Semaphore_Handler);
 				SERVO_MoveTo(&SEV, gCurrent_Angle);
 			}
@@ -525,12 +328,12 @@ void USART3_IRQHandler(void)
 
 			/*---------- Control Speed ----------*/
 		case SPEED_INC:  //5
-			if (gCurrent_Speed < MAX_SPEED_ && gCar_Direction != STOP)
+			if(gCurrent_Speed < MAX_SPEED_ && gCar_Direction != STOP)
 			{
-				xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Speed += ( gCurrent_Speed == 0 )? 20 : 10;
-				gSpeed_Up = gCurrent_Speed;
-				xSemaphoreGive(Current_Speed_Semaphore_Handler);
+			xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
+			gCurrent_Speed += ( gCurrent_Speed == 0 )? 15 : 10;
+			// gSpeed_Up = gCurrent_Speed;
+			xSemaphoreGive(Current_Speed_Semaphore_Handler);
 			}
 			break;
 
@@ -538,7 +341,7 @@ void USART3_IRQHandler(void)
 			if (gCurrent_Speed >= MIN_SPEED && gCar_Direction != STOP)
 			{
 				xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
-				gCurrent_Speed -= ( gCurrent_Speed == 15 )? 20 : 10;
+				gCurrent_Speed -= ( gCurrent_Speed == 15 )? 15 : 10;
 				// gSpeed_Up = gCurrent_Speed;
 				xSemaphoreGive(Current_Speed_Semaphore_Handler);
 			}
@@ -565,8 +368,6 @@ void USART3_IRQHandler(void)
 
 			}else if (ACC_State == OFF)
 			{
-				// gDesired_Speed = 0;
-				gCurrent_Speed = 0;
 				vTaskResume(vAEB_Task_Handler);
 				vTaskSuspend(vACC_Task_Handler);
 				vTaskSuspend(vSign_Task_Handler);

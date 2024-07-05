@@ -8,7 +8,11 @@ TaskHandle_t vAEB_Task_Handler;
 
 
 uint16_t gENCs_Speed;
-uint16_t gCar_Direction;uint8_t gCurrent_Speed ;
+
+
+
+extern uint8_t gCurrent_Speed;
+extern uint8_t gCar_Direction;
 
 uint16_t gFront_Distance;
 
@@ -29,8 +33,8 @@ void vAEB_Init(void)
 {
 
     xTaskCreate(vAEB_Task, "AEB", 128,( void * )NULL, 3,&vAEB_Task_Handler);
-	xTaskCreate(vCar_Task, "AEB", 128,( void * )NULL, 1, NULL);
-	xTaskCreate(vCalculations_Task, "AEB", 128,( void * )NULL, 1, NULL);
+	xTaskCreate(vCar_Task, "AEB", 128,( void * )NULL, 2, NULL);
+	xTaskCreate(vCalculations_Task, "AEB", 128,( void * )NULL, 4, NULL);
 
 
 	/* Create semaphores */
@@ -47,13 +51,16 @@ void vAEB_Init(void)
 }
 
 
-float K  = 0;
 
-uint16_t Loc_Object_Distance = 0;
+
+
+
 
 void vAEB_Task(void * pvParameter)
 {
 
+	uint16_t Loc_Object_Distance = 0;
+	float K  = 0;
 
 	for(;;)
 	{
@@ -62,9 +69,10 @@ void vAEB_Task(void * pvParameter)
 		{
 			BUZZER_off(AEB_LED_PORT, AEB_LED_GPIO_Pin);
 
+			/*---- Slow down ---- */
 			// Max_Speed = gCurrent_Speed ;
-			// K = ( (float)gCurrent_Speed / ( gWarning_Distance - gBreaking_Distance) );
-			//K = roundf( K * 100) / 100 ;
+			K = ( (float)gCurrent_Speed / ( gWarning_Distance - gBreaking_Distance) );
+			K = roundf( K * 100) / 100 ;
 
 		}else if(gFront_Distance <= gWarning_Distance && gFront_Distance > gBreaking_Distance)
 		{
@@ -73,7 +81,12 @@ void vAEB_Task(void * pvParameter)
 			BUZZER_on(AEB_LED_PORT, AEB_LED_GPIO_Pin);
 
 			/* ---------- slow down mechanism ------- */
-			// gCurrent_Speed = K * (gFront_Distance - gBreaking_Distance);
+			gCurrent_Speed = K * (gFront_Distance - gBreaking_Distance);
+			if(gCurrent_Speed < 10)
+			{
+				gCurrent_Speed = 0;
+				gCar_Direction = STOP;
+			}
 			/* -------------------------------------------- */
 
 		}else if(gFront_Distance < gBreaking_Distance )
@@ -94,7 +107,7 @@ void vAEB_Task(void * pvParameter)
 		}
 
 		// Periodicity of the Task
-		vTaskDelay(100);
+		vTaskDelay(200);
 
 	}
 }
@@ -128,13 +141,10 @@ void vCar_Task(void * pvParameter)
 		xSemaphoreGive(Motors_Semaphore_Handler);
 
 		/* --------- Speed of the motors --------*/
-
 		xSemaphoreTake(Current_Speed_Semaphore_Handler, portMAX_DELAY);
 		Motor_SetSpeed(&Rmotor,gCurrent_Speed);
 		Motor_SetSpeed(&Lmotor,gCurrent_Speed);
 		xSemaphoreGive(Current_Speed_Semaphore_Handler);
-
-
 
 		vTaskDelay(100);
 	}
@@ -195,7 +205,11 @@ void vCalculations_Task(void * pvParameter)
 		gBreaking_Distance = (BREAKING_DISTANCE_CONST * gENCs_Speed);
 		gWarning_Distance =  (WARNING_DISTANCE_CONST  * gENCs_Speed);
 
-		vTaskDelay(100);
+//		gBreaking_Distance = 5;
+//		gWarning_Distance = 12;
+
+
+		vTaskDelay(250);
 	}
 }
 

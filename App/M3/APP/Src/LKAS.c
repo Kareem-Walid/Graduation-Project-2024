@@ -26,7 +26,7 @@
 
 /********************************************************************************************************************/
 /********************************************************MACROs Section**********************************************/
-#define CENTER_ANGLE   60
+
 /********************************************************************************************************************/
 /*******************************************************Global Variables Section*************************************/
 TaskHandle_t pxLKASCreated;
@@ -82,14 +82,14 @@ static NError_type_e NError_type_e_LKAS_CreateTasks(void)
 		rt_type = TASK_CREATION_ERROR;
 	}
 
-	//	xTaskCreate_vTaskLDW = xTaskCreate(vTaskLDW,"vTaskLDW", 100, NULL, vTaskLDW_PRIORITY, NULL);
-	//	if(xTaskCreate_vTaskLDW != pdPASS)
-	//	{
-	//		rt_type = TASK_CREATION_ERROR;
-	//	}
+	xTaskCreate_vTaskLDW = xTaskCreate(vTaskLDW,"vTaskLDW", 100, NULL, vTaskLDW_PRIORITY, NULL);
+	if(xTaskCreate_vTaskLDW != pdPASS)
+	{
+		rt_type = TASK_CREATION_ERROR;
+	}
 
 	/*LKAS Task is initially Suspended.*/
-	//vTaskSuspend(pxLKASCreated);
+	vTaskSuspend(pxLKASCreated);
 
 	//	xTaskCreate_vServoError = xTaskCreate(vServoError,"vServoError", 100, NULL, 4, NULL);
 	//	if(xTaskCreate_vServoError != pdPASS)

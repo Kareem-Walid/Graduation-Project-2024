@@ -20,9 +20,9 @@
 
 
 
-#define SPEED_MAPPED_TO_30      20
-#define SPEED_MAPPED_TO_60      30
-#define SPEED_MAPPED_TO_90      40
+#define SPEED_MAPPED_TO_30      15
+#define SPEED_MAPPED_TO_60      25
+#define SPEED_MAPPED_TO_90      35
 
 void vACC_Init(void);
 

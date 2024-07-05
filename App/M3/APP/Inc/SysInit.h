@@ -16,7 +16,7 @@
 #define INIT_SEMPHR_COUNT  		0
 
 
-
+#define CENTER_ANGLE   60
 
 /*SPI Data.*/
 #define FRONT_US_ID             1U
@@ -37,9 +37,9 @@
 
 /* ----------------- APP MACROS ------------------- */
 
-#define CAR_FORWARD           3
+#define CAR_FORWARD           4
 #define CAR_RIGHT             2
-#define CAR_BACKWORD          4
+#define CAR_BACKWORD          3
 #define CAR_LEFT              1
 #define SPEED_INC             5
 #define SPEED_DEC             6
