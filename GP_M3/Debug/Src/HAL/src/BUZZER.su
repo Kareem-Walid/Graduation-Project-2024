@@ -1,0 +1,3 @@
+../Src/HAL/src/BUZZER.c:9:6:BUZZER_Init	24	static
+../Src/HAL/src/BUZZER.c:23:6:BUZZER_on	16	static
+../Src/HAL/src/BUZZER.c:27:6:BUZZER_off	16	static

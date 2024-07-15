@@ -1,0 +1,4 @@
+../Inc/core_cm3.h:1502:22:NVIC_EnableIRQ	16	static
+../Src/APP/Src/Initialize_file_M3.c:113:6:Bluetooth_Init	40	static
+../Src/APP/Src/Initialize_file_M3.c:168:6:SPIDev_Init	24	static
+../Src/APP/Src/Initialize_file_M3.c:219:6:Car_Init	8	static

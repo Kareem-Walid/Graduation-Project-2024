@@ -1,0 +1,2 @@
+../Src/MCAL/src/stm32f4xx_flash_ramfunc.c:98:12:FLASH_FlashInterfaceCmd	2
+../Src/MCAL/src/stm32f4xx_flash_ramfunc.c:121:12:FLASH_FlashSleepModeCmd	2

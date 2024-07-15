@@ -1,0 +1,15 @@
+../Src/MCAL/src/stm32f4xx_dcmi.c:119:6:DCMI_DeInit	1
+../Src/MCAL/src/stm32f4xx_dcmi.c:136:6:DCMI_Init	1
+../Src/MCAL/src/stm32f4xx_dcmi.c:178:6:DCMI_StructInit	1
+../Src/MCAL/src/stm32f4xx_dcmi.c:198:6:DCMI_CROPConfig	1
+../Src/MCAL/src/stm32f4xx_dcmi.c:216:6:DCMI_CROPCmd	2
+../Src/MCAL/src/stm32f4xx_dcmi.c:239:6:DCMI_SetEmbeddedSynchroCodes	1
+../Src/MCAL/src/stm32f4xx_dcmi.c:254:6:DCMI_JPEGCmd	2
+../Src/MCAL/src/stm32f4xx_dcmi.c:292:6:DCMI_Cmd	2
+../Src/MCAL/src/stm32f4xx_dcmi.c:315:6:DCMI_CaptureCmd	2
+../Src/MCAL/src/stm32f4xx_dcmi.c:337:10:DCMI_ReadData	1
+../Src/MCAL/src/stm32f4xx_dcmi.c:370:6:DCMI_ITConfig	2
+../Src/MCAL/src/stm32f4xx_dcmi.c:407:12:DCMI_GetFlagStatus	4
+../Src/MCAL/src/stm32f4xx_dcmi.c:454:6:DCMI_ClearFlag	1
+../Src/MCAL/src/stm32f4xx_dcmi.c:476:10:DCMI_GetITStatus	2
+../Src/MCAL/src/stm32f4xx_dcmi.c:508:6:DCMI_ClearITPendingBit	1

@@ -1,0 +1,4 @@
+../Src/APP/Src/LKAS.c:56:15:Error_type_t_LKASInit	16	static
+../Src/APP/Src/LKAS.c:69:22:NError_type_e_LKAS_CreateTasks	32	static
+../Src/APP/Src/LKAS.c:100:6:vTaskLDW	32	static
+../Src/APP/Src/LKAS.c:134:6:vTaskLKAS	24	static

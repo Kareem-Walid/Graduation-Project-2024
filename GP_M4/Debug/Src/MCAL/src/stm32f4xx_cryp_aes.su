@@ -1,0 +1,5 @@
+../Src/MCAL/src/stm32f4xx_cryp_aes.c:99:13:CRYP_AES_ECB	184	static
+../Src/MCAL/src/stm32f4xx_cryp_aes.c:287:13:CRYP_AES_CBC	216	static
+../Src/MCAL/src/stm32f4xx_cryp_aes.c:489:13:CRYP_AES_CTR	216	static
+../Src/MCAL/src/stm32f4xx_cryp_aes.c:663:13:CRYP_AES_GCM	296	static
+../Src/MCAL/src/stm32f4xx_cryp_aes.c:1128:13:CRYP_AES_CCM	288	static

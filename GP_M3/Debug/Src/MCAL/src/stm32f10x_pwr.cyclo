@@ -1,0 +1,11 @@
+../Inc/core_cm3.h:1211:22:__WFI	1
+../Inc/core_cm3.h:1212:22:__WFE	1
+../Src/MCAL/src/stm32f10x_pwr.c:111:6:PWR_DeInit	1
+../Src/MCAL/src/stm32f10x_pwr.c:123:6:PWR_BackupAccessCmd	1
+../Src/MCAL/src/stm32f10x_pwr.c:136:6:PWR_PVDCmd	1
+../Src/MCAL/src/stm32f10x_pwr.c:157:6:PWR_PVDLevelConfig	1
+../Src/MCAL/src/stm32f10x_pwr.c:177:6:PWR_WakeUpPinCmd	1
+../Src/MCAL/src/stm32f10x_pwr.c:196:6:PWR_EnterSTOPMode	2
+../Src/MCAL/src/stm32f10x_pwr.c:236:6:PWR_EnterSTANDBYMode	1
+../Src/MCAL/src/stm32f10x_pwr.c:259:12:PWR_GetFlagStatus	2
+../Src/MCAL/src/stm32f10x_pwr.c:285:6:PWR_ClearFlag	1

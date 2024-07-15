@@ -1,0 +1,5 @@
+../Src/APP/src/app.c:34:19:vSysInit	16	static
+../Src/APP/src/app.c:44:26:vAppTaskCreate	32	static
+../Src/APP/src/app.c:73:6:vTaskGetDistance	24	static
+../Src/APP/src/app.c:116:6:vTaskGetSpeed	16	static
+../Src/APP/src/app.c:135:6:SPI1_IRQHandler	16	static

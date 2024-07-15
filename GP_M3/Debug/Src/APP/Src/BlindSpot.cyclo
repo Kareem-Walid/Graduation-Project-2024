@@ -1,0 +1,7 @@
+../Src/APP/Src/BlindSpot.c:55:18:BS_ReturnTypeBS_Init	1
+../Src/APP/Src/BlindSpot.c:67:25:NBS_ReturnType_e_CreateBlindSpotTasks	4
+../Src/APP/Src/BlindSpot.c:94:25:NBS_ReturnType_e_CreateBlindSpotSemaphores	5
+../Src/APP/Src/BlindSpot.c:128:6:vRightAreaHandler	6
+../Src/APP/Src/BlindSpot.c:174:6:vLeftAreaHandler	6
+../Src/APP/Src/BlindSpot.c:220:6:TurnSignalWarningTwo	9
+../Src/APP/Src/BlindSpot.c:265:6:vApplicationStackOverflowHook	1

@@ -1,0 +1,2 @@
+../Src/MCAL/src/stm32f4xx_cryp_des.c:92:13:CRYP_DES_ECB	8
+../Src/MCAL/src/stm32f4xx_cryp_des.c:195:13:CRYP_DES_CBC	8

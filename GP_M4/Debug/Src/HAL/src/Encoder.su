@@ -1,0 +1,6 @@
+../Src/HAL/src/Encoder.c:27:6:ENC_Init	24	static
+../Src/HAL/src/Encoder.c:130:10:ENC_GetEncoderPulses	24	static
+../Src/HAL/src/Encoder.c:141:7:ENC_GetMotorRPM	24	static
+../Src/HAL/src/Encoder.c:155:7:ENC_GetMotorSpeed	32	static
+../Src/HAL/src/Encoder.c:167:17:ENC_GetMototDirection	24	static
+../Src/HAL/src/Encoder.c:212:6:ENC_DeInit	16	static

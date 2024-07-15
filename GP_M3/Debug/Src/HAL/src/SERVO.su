@@ -1,0 +1,5 @@
+../Src/HAL/src/SERVO.c:18:6:SERVO_Init	40	static
+../Src/HAL/src/SERVO.c:107:6:SERVO_MoveTo	32	static
+../Src/HAL/src/SERVO.c:133:6:SERVO_RawMove	16	static
+../Src/HAL/src/SERVO.c:157:10:SERVO_Get_MaxPulse	16	static
+../Src/HAL/src/SERVO.c:164:10:SERVO_Get_MinPulse	16	static

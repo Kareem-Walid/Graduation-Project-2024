@@ -1,0 +1,7 @@
+../Src/APP/Src/SysInit.c:100:12:SysInit	1
+../Src/APP/Src/SysInit.c:124:19:vSysInit_CreateSemaphore	5
+../Src/APP/Src/SysInit.c:174:19:vSysInit_CreateQueues	2
+../Src/APP/Src/SysInit.c:185:19:vSysInit_CreateTasks	1
+../Src/APP/Src/SysInit.c:206:19:SysInit_CreateEventGroups	2
+../Src/APP/Src/SysInit.c:231:6:vReadDataFromM4	1
+../Src/APP/Src/SysInit.c:278:6:USART3_IRQHandler	37

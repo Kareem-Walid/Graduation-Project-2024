@@ -1,0 +1,2 @@
+../Src/MCAL/src/stm32f4xx_hash_sha1.c:86:13:HASH_SHA1	5
+../Src/MCAL/src/stm32f4xx_hash_sha1.c:162:13:HMAC_SHA1	14

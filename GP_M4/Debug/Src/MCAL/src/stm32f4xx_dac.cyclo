@@ -1,0 +1,17 @@
+../Src/MCAL/src/stm32f4xx_dac.c:180:6:DAC_DeInit	1
+../Src/MCAL/src/stm32f4xx_dac.c:199:6:DAC_Init	1
+../Src/MCAL/src/stm32f4xx_dac.c:235:6:DAC_StructInit	1
+../Src/MCAL/src/stm32f4xx_dac.c:259:6:DAC_Cmd	2
+../Src/MCAL/src/stm32f4xx_dac.c:287:6:DAC_SoftwareTriggerCmd	2
+../Src/MCAL/src/stm32f4xx_dac.c:311:6:DAC_DualSoftwareTriggerCmd	2
+../Src/MCAL/src/stm32f4xx_dac.c:342:6:DAC_WaveGenerationCmd	2
+../Src/MCAL/src/stm32f4xx_dac.c:371:6:DAC_SetChannel1Data	1
+../Src/MCAL/src/stm32f4xx_dac.c:396:6:DAC_SetChannel2Data	1
+../Src/MCAL/src/stm32f4xx_dac.c:424:6:DAC_SetDualChannelData	2
+../Src/MCAL/src/stm32f4xx_dac.c:458:10:DAC_GetDataOutputValue	1
+../Src/MCAL/src/stm32f4xx_dac.c:503:6:DAC_DMACmd	2
+../Src/MCAL/src/stm32f4xx_dac.c:551:6:DAC_ITConfig	2
+../Src/MCAL/src/stm32f4xx_dac.c:583:12:DAC_GetFlagStatus	2
+../Src/MCAL/src/stm32f4xx_dac.c:618:6:DAC_ClearFlag	1
+../Src/MCAL/src/stm32f4xx_dac.c:641:10:DAC_GetITStatus	3
+../Src/MCAL/src/stm32f4xx_dac.c:681:6:DAC_ClearITPendingBit	1

@@ -1,0 +1,6 @@
+../Src/MCAL/src/stm32f10x_iwdg.c:91:6:IWDG_WriteAccessCmd	1
+../Src/MCAL/src/stm32f10x_iwdg.c:111:6:IWDG_SetPrescaler	1
+../Src/MCAL/src/stm32f10x_iwdg.c:124:6:IWDG_SetReload	1
+../Src/MCAL/src/stm32f10x_iwdg.c:137:6:IWDG_ReloadCounter	1
+../Src/MCAL/src/stm32f10x_iwdg.c:147:6:IWDG_Enable	1
+../Src/MCAL/src/stm32f10x_iwdg.c:160:12:IWDG_GetFlagStatus	2

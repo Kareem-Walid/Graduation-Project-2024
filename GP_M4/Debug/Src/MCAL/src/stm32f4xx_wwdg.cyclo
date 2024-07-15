@@ -1,0 +1,8 @@
+../Src/MCAL/src/stm32f4xx_wwdg.c:131:6:WWDG_DeInit	1
+../Src/MCAL/src/stm32f4xx_wwdg.c:147:6:WWDG_SetPrescaler	1
+../Src/MCAL/src/stm32f4xx_wwdg.c:166:6:WWDG_SetWindowValue	1
+../Src/MCAL/src/stm32f4xx_wwdg.c:189:6:WWDG_EnableIT	1
+../Src/MCAL/src/stm32f4xx_wwdg.c:201:6:WWDG_SetCounter	1
+../Src/MCAL/src/stm32f4xx_wwdg.c:232:6:WWDG_Enable	1
+../Src/MCAL/src/stm32f4xx_wwdg.c:259:12:WWDG_GetFlagStatus	2
+../Src/MCAL/src/stm32f4xx_wwdg.c:279:6:WWDG_ClearFlag	1

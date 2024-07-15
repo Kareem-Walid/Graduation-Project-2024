@@ -1,0 +1,5 @@
+../Src/MCAL/src/stm32f4xx_dbgmcu.c:51:10:DBGMCU_GetREVID	1
+../Src/MCAL/src/stm32f4xx_dbgmcu.c:61:10:DBGMCU_GetDEVID	1
+../Src/MCAL/src/stm32f4xx_dbgmcu.c:77:6:DBGMCU_Config	2
+../Src/MCAL/src/stm32f4xx_dbgmcu.c:116:6:DBGMCU_APB1PeriphConfig	2
+../Src/MCAL/src/stm32f4xx_dbgmcu.c:145:6:DBGMCU_APB2PeriphConfig	2

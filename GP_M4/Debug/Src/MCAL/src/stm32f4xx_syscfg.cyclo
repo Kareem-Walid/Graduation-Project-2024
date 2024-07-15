@@ -1,0 +1,7 @@
+../Src/MCAL/src/stm32f4xx_syscfg.c:98:6:SYSCFG_DeInit	1
+../Src/MCAL/src/stm32f4xx_syscfg.c:117:6:SYSCFG_MemoryRemapConfig	1
+../Src/MCAL/src/stm32f4xx_syscfg.c:138:6:SYSCFG_MemorySwappingBank	1
+../Src/MCAL/src/stm32f4xx_syscfg.c:161:6:SYSCFG_EXTILineConfig	1
+../Src/MCAL/src/stm32f4xx_syscfg.c:182:6:SYSCFG_ETH_MediaInterfaceConfig	1
+../Src/MCAL/src/stm32f4xx_syscfg.c:199:6:SYSCFG_CompensationCellCmd	1
+../Src/MCAL/src/stm32f4xx_syscfg.c:212:12:SYSCFG_GetCompensationCellStatus	2

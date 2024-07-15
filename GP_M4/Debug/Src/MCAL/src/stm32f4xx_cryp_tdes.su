@@ -1,0 +1,2 @@
+../Src/MCAL/src/stm32f4xx_cryp_tdes.c:93:13:CRYP_TDES_ECB	136	static
+../Src/MCAL/src/stm32f4xx_cryp_tdes.c:203:13:CRYP_TDES_CBC	160	static

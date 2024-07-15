@@ -1,0 +1,8 @@
+../Src/HAL/src/ULTRASONIC.c:15:6:ULTRASONIC_vInit	48	static
+../Src/HAL/src/ULTRASONIC.c:134:7:ULTRASONIC_vTrig	16	static
+../Src/HAL/src/ULTRASONIC.c:141:7:ULTRASONIC_u8GetDistance	16	static
+../Src/HAL/src/ULTRASONIC.c:205:6:Ultrasonic_delay	24	static
+../Src/HAL/src/ULTRASONIC.c:214:6:TIM2_IRQHandler	8	static
+../Src/HAL/src/ULTRASONIC.c:275:6:TIM3_IRQHandler	8	static
+../Src/HAL/src/ULTRASONIC.c:335:6:TIM4_IRQHandler	8	static
+../Src/HAL/src/ULTRASONIC.c:395:6:TIM5_IRQHandler	8	static

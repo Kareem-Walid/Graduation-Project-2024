@@ -1,0 +1,5 @@
+../Src/HAL/src/Motor.c:35:6:Motor_Init	16	static
+../Src/HAL/src/Motor.c:150:6:Motor_SetSpeed	24	static
+../Src/HAL/src/Motor.c:171:6:Motor_SetRPM	24	static
+../Src/HAL/src/Motor.c:193:6:Motor_PIDSetSpeed	48	static
+../Src/HAL/src/Motor.c:238:6:Motor_SetCarDir	24	static

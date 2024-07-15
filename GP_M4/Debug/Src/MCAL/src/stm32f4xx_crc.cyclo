@@ -1,0 +1,6 @@
+../Src/MCAL/src/stm32f4xx_crc.c:49:6:CRC_ResetDR	1
+../Src/MCAL/src/stm32f4xx_crc.c:60:10:CRC_CalcCRC	1
+../Src/MCAL/src/stm32f4xx_crc.c:73:10:CRC_CalcBlockCRC	2
+../Src/MCAL/src/stm32f4xx_crc.c:89:10:CRC_GetCRC	1
+../Src/MCAL/src/stm32f4xx_crc.c:99:6:CRC_SetIDRegister	1
+../Src/MCAL/src/stm32f4xx_crc.c:109:9:CRC_GetIDRegister	1

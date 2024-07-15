@@ -1,0 +1,8 @@
+../Src/MCAL/src/stm32f4xx_exti.c:103:6:EXTI_DeInit	1
+../Src/MCAL/src/stm32f4xx_exti.c:119:6:EXTI_Init	3
+../Src/MCAL/src/stm32f4xx_exti.c:175:6:EXTI_StructInit	1
+../Src/MCAL/src/stm32f4xx_exti.c:190:6:EXTI_GenerateSWInterrupt	1
+../Src/MCAL/src/stm32f4xx_exti.c:220:12:EXTI_GetFlagStatus	2
+../Src/MCAL/src/stm32f4xx_exti.c:243:6:EXTI_ClearFlag	1
+../Src/MCAL/src/stm32f4xx_exti.c:257:10:EXTI_GetITStatus	2
+../Src/MCAL/src/stm32f4xx_exti.c:281:6:EXTI_ClearITPendingBit	1

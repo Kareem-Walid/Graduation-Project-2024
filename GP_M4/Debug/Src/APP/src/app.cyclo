@@ -1,0 +1,5 @@
+../Src/APP/src/app.c:34:19:vSysInit	1
+../Src/APP/src/app.c:44:26:vAppTaskCreate	3
+../Src/APP/src/app.c:73:6:vTaskGetDistance	2
+../Src/APP/src/app.c:116:6:vTaskGetSpeed	1
+../Src/APP/src/app.c:135:6:SPI1_IRQHandler	6

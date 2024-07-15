@@ -1,0 +1,14 @@
+../Src/MCAL/src/stm32f10x_rtc.c:89:6:RTC_ITConfig	2
+../Src/MCAL/src/stm32f10x_rtc.c:110:6:RTC_EnterConfigMode	1
+../Src/MCAL/src/stm32f10x_rtc.c:121:6:RTC_ExitConfigMode	1
+../Src/MCAL/src/stm32f10x_rtc.c:132:10:RTC_GetCounter	2
+../Src/MCAL/src/stm32f10x_rtc.c:157:6:RTC_SetCounter	1
+../Src/MCAL/src/stm32f10x_rtc.c:172:6:RTC_SetPrescaler	1
+../Src/MCAL/src/stm32f10x_rtc.c:190:6:RTC_SetAlarm	1
+../Src/MCAL/src/stm32f10x_rtc.c:205:10:RTC_GetDivider	1
+../Src/MCAL/src/stm32f10x_rtc.c:219:6:RTC_WaitForLastTask	2
+../Src/MCAL/src/stm32f10x_rtc.c:235:6:RTC_WaitForSynchro	2
+../Src/MCAL/src/stm32f10x_rtc.c:256:12:RTC_GetFlagStatus	2
+../Src/MCAL/src/stm32f10x_rtc.c:285:6:RTC_ClearFlag	1
+../Src/MCAL/src/stm32f10x_rtc.c:303:10:RTC_GetITStatus	3
+../Src/MCAL/src/stm32f10x_rtc.c:330:6:RTC_ClearITPendingBit	1
